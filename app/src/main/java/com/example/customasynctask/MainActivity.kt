@@ -2,8 +2,11 @@ package com.example.customasynctask
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.example.customasynctask.databinding.ActivityMainBinding
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -19,9 +22,31 @@ class MainActivity : AppCompatActivity() {
             Log.d("ttt", "button on click listener ${Thread.currentThread()}")
         }
 
-        val customAsyncTask = CustomAsyncTask()
-        customAsyncTask.setTextView(binding.seconds)
+        val customAsyncTask = object : AbstractCustomAsyncTask<Int, Int>(0) {
+
+            override fun onProgressUpdate() {
+            }
+
+            override fun onPostExecute(output: Int) {
+                Log.d("ttt", "onPostExecute ${Thread.currentThread()}")
+            }
+
+            override fun doInBackground(value: Int): Int {
+                for (i in 1..10) {
+                    Thread.sleep(1000)
+                    data++
+                    Log.d("ttt", "doInBackground myLooper $data ${Thread.currentThread()}")
+                    Handler(Looper.getMainLooper()).post { //меняет потоки
+                        Log.d("ttt", "set text ${Thread.currentThread()}")
+                        binding.seconds.text =
+                            String.format(Locale.getDefault(), "%02d:%02d:%02d", 0, 0, data)
+                    }
+                }
+                return data
+            }
+        }
         customAsyncTask.execute()
+
     }
 }
 
