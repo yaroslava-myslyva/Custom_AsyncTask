@@ -1,16 +1,17 @@
 package com.example.customasynctask
 
-import android.icu.util.Output
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.customasynctask.databinding.ActivityMainBinding
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    //doInBackground в MainActivity->data++->publishProgress(data) в doInBackground в MainActivity->onProgressUpdate(progress)
+
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -24,7 +24,6 @@ abstract class AbstractCustomAsyncTask<Input, Output>(data: Input) {
         }
     }
 
-
     fun onPreExecute() {}
 
     abstract fun doInBackground(value: Input): Output
